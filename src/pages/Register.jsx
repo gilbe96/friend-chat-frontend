@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/logo.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,7 +8,9 @@ import axios from "axios";
 import { registerRoute } from "../utils/ApiRoutes";
 
 function Register() {
-  const [user, setUser] = useState({
+  const navigate = useNavigate();
+
+  const [values, setValues] = useState({
     username: "",
     email: "",
     password: "",
@@ -26,17 +28,24 @@ function Register() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (handleValidation) {
-      const { password, confirmPassword, username, email } = user;
+      const { password, username, email } = values;
       const { data } = await axios.post(registerRoute, {
         username,
         email,
         password,
       });
+      if (data.status === false) {
+        toast.error(data.msg, toastOptions);
+      }
+      if (data.status === true) {
+        localStorage.setItem("chat-user", JSON.stringify(data.user));
+        navigate("/");
+      }
     }
   };
 
   const handleValidation = () => {
-    const { password, confirmPassword, username, email } = user;
+    const { password, confirmPassword, username, email } = values;
     if (password !== confirmPassword) {
       toast.error("Password and Confirm Password should be same", toastOptions);
       return false;
@@ -53,7 +62,7 @@ function Register() {
   };
 
   const handleChange = (event) => {
-    setUser({ ...user, [event.target.name]: event.target.value });
+    setValues({ ...values, [event.target.name]: event.target.value });
   };
 
   return (
@@ -126,7 +135,7 @@ const FormContainer = styled.div`
     gap: 1rem;
     background-color: rgb(20, 30, 60);
     border-radius: 2rem;
-    padding: 2rem 3.5rem;
+    padding: 1.5rem 2.5rem;
     input {
       background-color: transparent;
       padding: 0.7rem;
