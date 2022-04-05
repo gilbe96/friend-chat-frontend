@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/logo.png";
@@ -25,6 +25,12 @@ function Register() {
     theme: "dark",
   };
 
+  useEffect(() => {
+    if (localStorage.getItem("chat-user")) {
+      navigate("/");
+    }
+  }, []);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (handleValidation) {
@@ -39,7 +45,7 @@ function Register() {
       }
       if (data.status === true) {
         localStorage.setItem("chat-user", JSON.stringify(data.user));
-        navigate("/");
+        navigate("/setAvatar");
       }
     }
   };
