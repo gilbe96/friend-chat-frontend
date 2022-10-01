@@ -35,7 +35,8 @@ export default function SetAvatar() {
       image: properties,
     });
     user.isAvatarImageSet = true;
-    user.avatarImage = data.image;
+    user.avatarImage = properties;
+    console.log(properties);
     localStorage.setItem("chat-user", JSON.stringify(user));
     navigate("/");
   };
@@ -62,9 +63,10 @@ const Container = styled.div`
   height: 100vh;
   width: 100vw;
   .title-container {
+    padding: 30px;
     display: flex;
     justify-content: center;
-    aling-items: center;
+    align-items: center;
     flex-wrap: wrap;
     h1 {
       margin-top: 2rem;
