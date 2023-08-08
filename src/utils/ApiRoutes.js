@@ -1,4 +1,6 @@
-export const host = "https://secure-beyond-75869.herokuapp.com";
+///Backend in Vercel
+export const host = "https://friend-chat-backend.vercel.app";
+
 export const registerRoute = `${host}/api/auth/register`;
 export const loginRoute = `${host}/api/auth/login`;
 export const setAvatarRoute = `${host}/api/auth/setAvatar`;
